@@ -2,6 +2,10 @@ import React from "react";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import HomeScreen from "./screens/HomeScreen";
+import AppNavigator from "./navigator/AppNavigator";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 const initialState = {
 	action: "",
@@ -25,7 +29,7 @@ const store = createStore(reducer);
 
 const App = () => (
 	<Provider store={store}>
-		<HomeScreen></HomeScreen>
+		<AppNavigator />
 	</Provider>
 );
 

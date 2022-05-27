@@ -98,14 +98,20 @@ class HomeScreen extends React.Component {
 							<Subtitle>Recent Places</Subtitle>
 							<ScrollView horizontal={true} style={{ paddingBottom: 30 }} showsHorizontalScrollIndicator={false}>
 								{cards.map((card, index) => (
-									<Card
+									<TouchableOpacity
 										key={index}
-										title={card.title}
-										image={card.image}
-										caption={card.caption}
-										logo={card.logo}
-										subtitle={card.subtitle}
-									></Card>
+										onPress={() => {
+											this.props.navigation.push("Section");
+										}}
+									>
+										<Card
+											title={card.title}
+											image={card.image}
+											caption={card.caption}
+											logo={card.logo}
+											subtitle={card.subtitle}
+										></Card>
+									</TouchableOpacity>
 								))}
 							</ScrollView>
 							<Subtitle>Recommended Places</Subtitle>
@@ -148,7 +154,8 @@ const Subtitle = styled.Text`
 const Container = styled.View`
 	flex: 1;
 	background-color: #f0f3f5;
-	border-radius: 10px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
