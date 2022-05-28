@@ -1,4 +1,4 @@
-import { setStatusBarStyle, StatusBar } from "expo-status-bar";
+import { setStatusBarStyle } from "expo-status-bar";
 import { ScrollView, SafeAreaView, TouchableOpacity, Animated, Easing } from "react-native";
 import styled from "styled-components";
 import Card from "../components/Card";
@@ -101,7 +101,10 @@ class HomeScreen extends React.Component {
 									<TouchableOpacity
 										key={index}
 										onPress={() => {
-											this.props.navigation.push("Section");
+											this.props.navigation.push("Section", {
+												// passing information to new screen
+												section: card,
+											});
 										}}
 									>
 										<Card

@@ -16,7 +16,7 @@ const AppNavigator = createStackNavigator(
 );
 
 // use tabs
-export default createAppContainer(TabNavigator);
+export default createAppContainer(AppNavigator);
 
 // or
 // export default createAppContainer(AppNavigator);
