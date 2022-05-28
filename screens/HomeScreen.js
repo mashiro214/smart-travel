@@ -10,6 +10,42 @@ import Menu from "../components/Menu";
 import { connect } from "react-redux";
 import React from "react";
 import Avatar from "../components/Avatar";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+
+// Query to Contentful using GraphQL
+const CardsQuery = gql`
+	{
+		cardsCollection {
+			items {
+				title
+				subtitle
+				image {
+					title
+					description
+					contentType
+					fileName
+					size
+					url
+					width
+					height
+				}
+				subtitle
+				caption
+				logo {
+					title
+					description
+					contentType
+					fileName
+					size
+					url
+					width
+					height
+				}
+			}
+		}
+	}
+`;
 
 function mapStateToProps(state) {
 	return { action: state.action, name: state.name };
@@ -97,25 +133,38 @@ class HomeScreen extends React.Component {
 							</ScrollView>
 							<Subtitle>Recent Places</Subtitle>
 							<ScrollView horizontal={true} style={{ paddingBottom: 30 }} showsHorizontalScrollIndicator={false}>
-								{cards.map((card, index) => (
-									<TouchableOpacity
-										key={index}
-										onPress={() => {
-											this.props.navigation.push("Section", {
-												// passing information to new screen
-												section: card,
-											});
-										}}
-									>
-										<Card
-											title={card.title}
-											image={card.image}
-											caption={card.caption}
-											logo={card.logo}
-											subtitle={card.subtitle}
-										></Card>
-									</TouchableOpacity>
-								))}
+								<Query query={CardsQuery}>
+									{({ loading, error, data }) => {
+										if (loading) return <Message>Loading...</Message>;
+										if (error) return <Message>Error...</Message>;
+
+										console.log(data.cardsCollection.items);
+
+										return (
+											<CardsContainer>
+												{data.cardsCollection.items.map((card, index) => (
+													<TouchableOpacity
+														key={index}
+														onPress={() => {
+															this.props.navigation.push("Section", {
+																// passing information to new screen
+																section: card,
+															});
+														}}
+													>
+														<Card
+															title={card.title}
+															image={card.image}
+															caption={card.caption}
+															logo={card.logo}
+															subtitle={card.subtitle}
+														></Card>
+													</TouchableOpacity>
+												))}
+											</CardsContainer>
+										);
+									}}
+								</Query>
 							</ScrollView>
 							<Subtitle>Recommended Places</Subtitle>
 							{places.map((place, index) => (
@@ -139,6 +188,17 @@ class HomeScreen extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+
+const Message = styled.Text`
+	margin: 20px;
+	color: #b8bece;
+	font-size: 15px;
+	font-weight: 500;
+`;
+
+const CardsContainer = styled.View`
+	flex-direction: row;
+`;
 
 const RootView = styled.View`
 	background: black;

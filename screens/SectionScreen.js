@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { setStatusBarHidden } from "expo-status-bar";
 
 class SectionScreen extends React.Component {
+	// fade in status bar
 	componentDidMount() {
 		setStatusBarHidden(true, "fade");
 	}
